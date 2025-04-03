@@ -18,9 +18,6 @@ function App() {
         <Weather />
       </div>
 
-      <footer className="mt-8 text-center text-sky-600 dark:text-sky-400 text-sm">
-        Powered by OpenWeatherMap
-      </footer>
     </div>
   )
 }

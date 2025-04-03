@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Search from "../search";
-import { ArrowPathIcon, CloudArrowUpIcon, SunIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, CloudArrowUpIcon, SunIcon, HeartIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 export default function Weather() {
     const [search, setSearch] = useState("");
@@ -27,16 +27,6 @@ export default function Weather() {
 
     }
 
-    function getCurrentDate() {
-        return new Date().toLocaleDateString('en-us',
-            {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            }
-        )
-    }
 
     function handleSearch() {
 
@@ -68,7 +58,58 @@ export default function Weather() {
                             <h2 className="text-2xl font-bold">
                                 {weatherData?.name}, <span className="font-medium">{weatherData?.sys?.country}</span>
                             </h2>
-                            <p className="text-sm opacity-80">{getCurrentDate()}</p>
+
+                            <div className="backdrop-blur-sm rounded-xl p-3 mb-6 shadow-sm bg-white/10">
+                                <div className="flex items-center justify-center gap-8">
+                                    {/* Date Section */}
+                                    <div className="flex items-center gap-2">
+                                        <CalendarIcon className="h-6 w-6 text-white/80" />
+                                        <div className="text-center">
+                                            <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                                                {new Date(Date.now() + (weatherData.timezone * 1000)).toLocaleDateString('en-us', {
+                                                    weekday: 'long',
+                                                    timeZone: 'UTC'
+                                                })}
+                                            </p>
+                                            <p className="text-lg font-semibold text-white">
+                                                {new Date(Date.now() + (weatherData.timezone * 1000)).toLocaleDateString('en-us', {
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                    timeZone: 'UTC'
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Divider */}
+                                    <div className="h-8 w-px bg-white/20" />
+
+                                    {/* Time Section */}
+                                    <div className="flex items-center gap-2">
+                                        <ClockIcon className="h-6 w-6 text-white/80" />
+                                        <div className="text-center">
+                                            <p className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                                                Local Time
+                                            </p>
+                                            <p className="text-lg font-semibold text-white">
+                                                {new Date(Date.now() + (weatherData.timezone * 1000)).toLocaleTimeString('en-us', {
+                                                    hour: 'numeric',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                    timeZone: 'UTC'
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* UTC Offset */}
+                                <p className="text-center text-sm text-white/50 mt-2">
+                                    UTC{weatherData.timezone >= 0 ? '+' : '-'}
+                                    {Math.abs(weatherData.timezone / 3600)}
+                                </p>
+                            </div>
 
                             <div className="flex items-center justify-center gap-4">
                                 <CloudArrowUpIcon className="h-16 w-16" />
